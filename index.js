@@ -8,47 +8,59 @@ const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 // const team = [{
-    const managerTeam = []; const engineerTeam = []; const internTeam = []
+    // const managerTeam = []; const engineerTeam = []; const internTeam = []
 // }]
 
 
 const promptUser = () => {    
-      return inquirer.prompt(teamQuestions)
-}
+      inquirer.prompt(teamQuestions)
+      .then (teamData => {
 
-const buildFolks = (teamData) => {
+      // })
+    
+    
+    // const buildFolks = (teamData) => {
+      if (!teamData.team){
+        teamData.team = []
+      }
+      
+      if (teamData.addOrEnd === "Finished building team") {
+          console.log ('Team Built!');
+          console.log(teamData.team);   
+          return teamData.team;   
+      } else {
+        promptUser(teamQuestions)
+      }
         if (teamData.role === "Manager") {
         const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
-        managerTeam.push(manager);
-        console.log(managerTeam)
+        teamData.team.push(manager);
+        console.log(teamData.team)
+        console.log (teamData.addOrEnd)
     } else
 
     if (teamData.role === "Engineer") {
         const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
-        engineerTeam.push(engineer);
-        console.log(engineerTeam)
+        teamData.team.push(engineer);
+        console.log(teamData.team)
     } else 
 
     if (teamData.role === "Intern") {
         const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
-        internTeam.push(intern);
-        console.log(internTeam)
+        teamData.team.push(intern);
+        console.log(teamData.team)
     };
 
 
-    if (teamData.addOrEnd === "Add another team member") {
-        return promptUser();   
-    }
-}
+});}
 
 
 
 const teamQuestions = [
     {
-        type: 'list',
-        name: 'role',
-        message: "Confirm team member's role.",
-        choices: ['Manager', new inquirer.Separator(), 'Engineer', new inquirer.Separator(), 'Intern']
+      type: 'list',
+      name: 'role',
+      message: "Confirm team member's role.",
+      choices: ['Manager', new inquirer.Separator(), 'Engineer', new inquirer.Separator(), 'Intern']
     },
     {
     type: 'input',
@@ -144,6 +156,7 @@ type: 'list',
 name: 'addOrEnd',
 message: 'Would you like to enter another team member or are you finished building your team?',
 choices: ['Add another team member', new inquirer.Separator(), 'Finished building team'],
+default: 'Add another team member',
 }
 ]
 
@@ -158,7 +171,7 @@ function init () {
     `);
     
     promptUser()
-    .then(buildFolks)
+    // .then(buildFolks)
 
 }
 // WHEN I enter the team manager’s name, employee ID, email address, and office number
