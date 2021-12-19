@@ -9,15 +9,31 @@ const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 
 
-const promptUser = () => {
-    inquirer.prompt(teamQuestions)
-    .then((teamAnswers) => {
-        const teamMember = new Manager (teamAnswers.name, teamAnswers.employeeID, teamAnswers.email, teamAnswers.officeNumber)
-        console.log (teamMember)
-  });
+
+const promptUser = () => {    
+    return inquirer.prompt(teamQuestions)
+    
 }
 
-const teamQuestions = [{
+const groupTeam = (teamData) => {
+    if (!teamData.teamArray){
+        teamData.teamArray = []
+    };
+
+    if (teamData.role === "Manager"){
+        const Manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
+        teamData.teamArray.push(Manager);
+    }
+}
+
+const teamQuestions = [
+    {
+        type: 'list',
+        name: 'role',
+        message: "Confirm team member's role.",
+        choices: ['Manager', new inquirer.Separator(), 'Engineer', new inquirer.Separator(), 'Intern']
+    },
+    {
     type: 'input',
     name: 'name',
     message: "What is the team member's name?",
@@ -56,12 +72,8 @@ validate: email => {
     }
   }
 },
-{
-    type: 'list',
-    name: 'role',
-    message: "Confirm team member's role.",
-    choices: ['Manager', 'Engineer', 'Intern']
-},
+
+//conditional questions depending on team member's role
 {
 type: 'input',
 name: 'officeNumber',
@@ -109,13 +121,12 @@ when: ({role}) => {
         when: ({role}) => {
             if (role === 'Intern') {return true;}
             else {return false}}
-        },
+    },
 {
 type: 'list',
 name: 'addOrEnd',
 message: 'Would you like to enter another team member or are you finished building your team?',
-choices: ['Add an Engineer', new inquirer.Separator(), 'Add an Intern', new inquirer.Separator(), 'Finished building team'],
-default: 'Finished building team'
+choices: ['Add another team member', new inquirer.Separator(), 'Finished building team'],
 }
 ]
 
@@ -130,6 +141,16 @@ function init () {
     `);
    
     promptUser()
+    .then(groupTeam)
+    .then(
+        teamAnswers => {
+        
+
+
+            if (teamAnswers.addOrEnd === "Add another team member") {
+            return promptUser();
+          }})
+    .then (teamData => console.log(teamData.teamArray))
 }
 // WHEN I enter the team manager’s name, employee ID, email address, and office number
 // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
