@@ -7,49 +7,41 @@ const Employee = require('./lib/Employee');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-// const team = [{
+const team = []
     // const managerTeam = []; const engineerTeam = []; const internTeam = []
 // }]
 
 
 const promptUser = () => {    
       inquirer.prompt(teamQuestions)
-      .then (teamData => {
-
-      // })
-    
-    
-    // const buildFolks = (teamData) => {
-      if (!teamData.team){
-        teamData.team = []
-      }
+      .then (teamData => {    
+        // teamData.team = []
       
-      if (teamData.addOrEnd === "Finished building team") {
-          console.log ('Team Built!');
-          console.log(teamData.team);   
-          return teamData.team;   
-      } else {
-        promptUser(teamQuestions)
-      }
         if (teamData.role === "Manager") {
-        const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
-        teamData.team.push(manager);
-        console.log(teamData.team)
-        console.log (teamData.addOrEnd)
+          const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
+          team.push(manager);
+          // console.log(teamData.team)
     } else
 
     if (teamData.role === "Engineer") {
-        const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
-        teamData.team.push(engineer);
-        console.log(teamData.team)
+      const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
+      team.push(engineer);
+      // console.log(teamData.team)
     } else 
 
     if (teamData.role === "Intern") {
         const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
-        teamData.team.push(intern);
-        console.log(teamData.team)
-    };
-
+        team.push(intern);
+      }
+      console.log(team)
+      
+      if (teamData.addOrEnd === "Finished building team") {
+          console.log ('Team Built!');
+          console.log(team);   
+          return team;   
+      } else {
+        promptUser(teamQuestions)
+      }
 
 });}
 
@@ -171,7 +163,9 @@ function init () {
     `);
     
     promptUser()
-    // .then(buildFolks)
+    // .then(teamData =>
+    //   {console.log(teamData.team)}
+    //   )
 
 }
 // WHEN I enter the team manager’s name, employee ID, email address, and office number
