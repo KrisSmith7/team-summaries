@@ -1,0 +1,25 @@
+{
+  "name": "team-summaries",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KrisSmith7/team-summaries.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KrisSmith7/team-summaries/issues"
+  },
+  "homepage": "https://github.com/KrisSmith7/team-summaries#readme",
+  "dependencies": {
+    "jest": "^27.4.5"
+  }
+}
