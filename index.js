@@ -7,24 +7,41 @@ const Employee = require('./lib/Employee');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-
+// const team = [{
+    const managerTeam = []; const engineerTeam = []; const internTeam = []
+// }]
 
 
 const promptUser = () => {    
-    return inquirer.prompt(teamQuestions)
-    
+      return inquirer.prompt(teamQuestions)
 }
 
-const groupTeam = (teamData) => {
-    if (!teamData.teamArray){
-        teamData.teamArray = []
+const buildFolks = (teamData) => {
+        if (teamData.role === "Manager") {
+        const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
+        managerTeam.push(manager);
+        console.log(managerTeam)
+    } else
+
+    if (teamData.role === "Engineer") {
+        const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
+        engineerTeam.push(engineer);
+        console.log(engineerTeam)
+    } else 
+
+    if (teamData.role === "Intern") {
+        const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
+        internTeam.push(intern);
+        console.log(internTeam)
     };
 
-    if (teamData.role === "Manager"){
-        const Manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
-        teamData.teamArray.push(Manager);
+
+    if (teamData.addOrEnd === "Add another team member") {
+        return promptUser();   
     }
 }
+
+
 
 const teamQuestions = [
     {
@@ -139,18 +156,10 @@ function init () {
     Let's start with your team manager.
     =================
     `);
-   
+    
     promptUser()
-    .then(groupTeam)
-    .then(
-        teamAnswers => {
-        
+    .then(buildFolks)
 
-
-            if (teamAnswers.addOrEnd === "Add another team member") {
-            return promptUser();
-          }})
-    .then (teamData => console.log(teamData.teamArray))
 }
 // WHEN I enter the team manager’s name, employee ID, email address, and office number
 // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
