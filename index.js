@@ -40,7 +40,7 @@ const promptUser = () => {
         promptUser(teamQuestions)
       }
     })
-    .then ((answers => {console.log (answers); return showData(answers)}))
+    .then ((answers => {console.log (answers); return (showData(answers))}))
     .then ((teamData => {return createHTML(teamData)}))
     .then (pageHTML => {return writeFile(pageHTML)})
     .catch (err => {console.log(err);})
