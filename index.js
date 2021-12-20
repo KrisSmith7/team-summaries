@@ -8,8 +8,11 @@ const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 const team = []
+const { writeFile, createHTML } = require('./lib/util/generateHTML');
+// const makeEmployeeCards = require('./lib/util/generateHTML');
     // const managerTeam = []; const engineerTeam = []; const internTeam = []
 // }]
+// const pageContent = generateHTML(team)
 
 
 const promptUser = () => {    
@@ -33,17 +36,39 @@ const promptUser = () => {
         const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
         team.push(intern);
       }
-      console.log(team)
+      // console.log(team)
       
       if (teamData.addOrEnd === "Finished building team") {
-          console.log ('Team Built!');
-          console.log(team);   
+          console.log ('Team Built!'); 
           return team;   
       } else {
         promptUser(teamQuestions)
       }
+    })
+    .then ((teamData => {return createHTML(teamData)}))
+    .then (pageHTML => {return writeFile(pageHTML)})
+    .catch (err => {console.log(err);
+    })
+    }
 
-});}
+      //   return new Promise((resolve, reject) => {
+      //     fs.writeFile('./mytest.html', teamDataResponse, err => {
+      //       // if there's an error, reject the Promise and send the error to the Promise's `.catch()` method
+      //       if (err) {
+      //         reject(err);
+      //         // return out of the function here to make sure the Promise doesn't accidentally execute the resolve() function as well
+      //         return;
+      //       }
+      
+      //       // if everything went well, resolve the Promise and send the successful data to the `.then()` method
+      //       resolve({
+      //         ok: true,
+      //         message: 'File created!'
+      //       });
+      //     });
+      //   });
+      // }
+
 
 
 
@@ -153,6 +178,13 @@ default: 'Add another team member',
 ]
 
 
+// function addTeamToPage (team) {
+//   const newTeamCard = team.map()
+// const card = document.createElement('div');
+// card.appendChild(newTeamCard)
+// const teamSection = document.querySelector('#teamSection')
+// teamSection.appendChild(card)
+// }
 
 
 function init () {
@@ -163,10 +195,7 @@ function init () {
     `);
     
     promptUser()
-    // .then(teamData =>
-    //   {console.log(teamData.team)}
-    //   )
-
+   
 }
 // WHEN I enter the team manager’s name, employee ID, email address, and office number
 // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
