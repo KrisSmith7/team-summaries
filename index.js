@@ -3,17 +3,12 @@
 // WHEN I start the application
 // THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
 const inquirer = require ('Inquirer');
-const Employee = require('./lib/Employee');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-const team = []
-const { writeFile, createHTML } = require('./lib/util/generateHTML');
-// const makeEmployeeCards = require('./lib/util/generateHTML');
-    // const managerTeam = []; const engineerTeam = []; const internTeam = []
-// }]
-// const pageContent = generateHTML(team)
-
+const team = [];
+module.exports = team;
+const { writeFile, createHTML, showData } = require('./lib/util/generateHTML');
 
 const promptUser = () => {    
       inquirer.prompt(teamQuestions)
@@ -45,31 +40,11 @@ const promptUser = () => {
         promptUser(teamQuestions)
       }
     })
+    .then ((answers => {console.log (answers); return showData(answers)}))
     .then ((teamData => {return createHTML(teamData)}))
     .then (pageHTML => {return writeFile(pageHTML)})
-    .catch (err => {console.log(err);
-    })
+    .catch (err => {console.log(err);})
     }
-
-      //   return new Promise((resolve, reject) => {
-      //     fs.writeFile('./mytest.html', teamDataResponse, err => {
-      //       // if there's an error, reject the Promise and send the error to the Promise's `.catch()` method
-      //       if (err) {
-      //         reject(err);
-      //         // return out of the function here to make sure the Promise doesn't accidentally execute the resolve() function as well
-      //         return;
-      //       }
-      
-      //       // if everything went well, resolve the Promise and send the successful data to the `.then()` method
-      //       resolve({
-      //         ok: true,
-      //         message: 'File created!'
-      //       });
-      //     });
-      //   });
-      // }
-
-
 
 
 const teamQuestions = [
@@ -186,17 +161,18 @@ default: 'Add another team member',
 // teamSection.appendChild(card)
 // }
 
-
 function init () {
-    console.log(`
+    console.log (
+    `
     =================
-    Let's start with your team manager.
+    Hi, Welcome to Team Summaries! This application will help build an HTML page to display your team's information.
+    Let's get started.
     =================
-    `);
-    
+    `
+    );
     promptUser()
-   
-}
+   }
+
 // WHEN I enter the team manager’s name, employee ID, email address, and office number
 // THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
 // WHEN I select the engineer option
@@ -205,5 +181,4 @@ function init () {
 // THEN I am prompted to enter the intern’s name, ID, email, and school, and I am taken back to the menu
 // WHEN I decide to finish building my team
 // THEN I exit the application, and the HTML is generated
-
 init()
