@@ -12,36 +12,34 @@ const { writeFile, createHTML, showData } = require('./lib/util/generateHTML');
 
 const promptUser = () => {    
       inquirer.prompt(teamQuestions)
-      .then (teamData => {    
-        // teamData.team = []
+        .then (teamData => {    
       
-        if (teamData.role === "Manager") {
-          const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
-          team.push(manager);
-          // console.log(teamData.team)
-    } else
-
-    if (teamData.role === "Engineer") {
-      const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
-      team.push(engineer);
-      // console.log(teamData.team)
-    } else 
-
-    if (teamData.role === "Intern") {
-        const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
-        team.push(intern);
-      }
-      // console.log(team)
-      
-      if (teamData.addOrEnd === "Finished building team") {
-          console.log ('Team Built!'); 
-          return team;   
-      } else {
-        promptUser(teamQuestions)
-      }
-    })
-    .then ((answers => {console.log (answers); return (showData(answers))}))
-    .then ((teamData => {return createHTML(teamData)}))
+          //pushes each newly created team member to array
+          if (teamData.role === "Manager") {
+            const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
+            team.push(manager);
+          } else
+          
+          if (teamData.role === "Engineer") {
+          const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
+          team.push(engineer);
+          } else 
+          
+          if (teamData.role === "Intern") {
+          const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
+          team.push(intern);
+          }
+         // console.log(team)
+        //condition to exit app
+        if (teamData.addOrEnd === "Finished building team") {
+            console.log ('Generating HTML page... Open index.html to see.'); 
+            return team;   
+            } else {
+              promptUser(teamQuestions)
+            }
+      })
+    .then (answers => {return showData(answers)})
+    .then (teamData => {return createHTML(teamData)})
     .then (pageHTML => {return writeFile(pageHTML)})
     .catch (err => {console.log(err);})
     }
@@ -152,23 +150,12 @@ default: 'Add another team member',
 }
 ]
 
-
-// function addTeamToPage (team) {
-//   const newTeamCard = team.map()
-// const card = document.createElement('div');
-// card.appendChild(newTeamCard)
-// const teamSection = document.querySelector('#teamSection')
-// teamSection.appendChild(card)
-// }
-
 function init () {
     console.log (
-    `
-    =================
+    `=================
     Hi, Welcome to Team Summaries! This application will help build an HTML page to display your team's information.
     Let's get started.
-    =================
-    `
+    =================`
     );
     promptUser()
    }
