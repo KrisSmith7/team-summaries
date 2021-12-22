@@ -33,14 +33,13 @@ const promptUser = () => {
         //condition to exit app
         if (teamData.addOrEnd === "Finished building team") {
             console.log ('Generating HTML page... Open index.html to see.'); 
-            return team;   
+            showData();
+            var data = createHTML();
+            writeFile(data); 
             } else {
               promptUser(teamQuestions)
             }
       })
-    .then (answers => {return showData(answers)})
-    .then (teamData => {return createHTML(teamData)})
-    .then (pageHTML => {return writeFile(pageHTML)})
     .catch (err => {console.log(err);})
     }
 
