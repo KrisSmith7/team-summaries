@@ -29,11 +29,9 @@
 
   There is also a sample HTML file for reference in the repo named `samplepage.html`.
   
-  [samplepage.html](https://krissmith7.github.io/team-summaries/samplepage)
-
 ---
   ## Tests
-  To run tests written for this application, after installing the npm packages by running npm i, npm test will run each of the four test suites.
+  To run tests written for this application: run `npm i` to install packages, then `npm test` will run each of the four test suites.
 
 ---
   ## Questions
