@@ -1,7 +1,4 @@
-// GIVEN a command-line application that accepts user input
-// WHEN I am prompted for my team members and their information
-// WHEN I start the application
-// THEN I am prompted to enter the team manager’s name, employee ID, email address, and office number
+//variables and required packages for application
 const inquirer = require ('Inquirer');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
@@ -10,42 +7,9 @@ const team = [];
 module.exports = team;
 const { writeFile, createHTML, showData } = require('./lib/util/generateHTML');
 
-const promptUser = () => {    
-      inquirer.prompt(teamQuestions)
-        .then (teamData => {    
-      
-          //pushes each newly created team member to array
-          if (teamData.role === "Manager") {
-            const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
-            team.push(manager);
-          } else
-          
-          if (teamData.role === "Engineer") {
-          const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
-          team.push(engineer);
-          } else 
-          
-          if (teamData.role === "Intern") {
-          const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
-          team.push(intern);
-          }
-         // console.log(team)
-        //condition to exit app
-        if (teamData.addOrEnd === "Finished building team") {
-            console.log ('Generating HTML page... Open index.html to see.'); 
-            showData();
-            var data = createHTML();
-            writeFile(data); 
-            } else {
-              promptUser(teamQuestions)
-            }
-      })
-    .catch (err => {console.log(err);})
-    }
-
-
+//list of questions to collect user input
 const teamQuestions = [
-    {
+  {
       type: 'list',
       name: 'role',
       message: "Confirm team member's role.",
@@ -105,15 +69,15 @@ validate: officeNumber => {
     }
   },
 when: ({role}) => {
-    if (role === 'Manager') {return true;}
-    else {return false}}
+  if (role === 'Manager') {return true;}
+  else {return false}}
 },
 {
     type: 'input',
     name: 'engineerGithub',
     message: "Enter Engineer's Github Username.",
     validate: engineerGithub => {
-        if (engineerGithub) {
+      if (engineerGithub) {
           return true;
         } else {
           console.log('Please enter a username.');
@@ -121,7 +85,7 @@ when: ({role}) => {
         }
       },
     when: ({role}) => {
-        if (role === 'Engineer') {return true;}
+      if (role === 'Engineer') {return true;}
         else {return false}}
     },
     {
@@ -149,6 +113,42 @@ default: 'Add another team member',
 }
 ]
 
+const promptUser = () => {    
+      inquirer.prompt(teamQuestions)
+      .then (teamData => {    
+          //pushes each newly created team member to array
+          if (teamData.role === "Manager") {
+            const manager = new Manager (teamData.name, teamData.employeeID, teamData.email, teamData.officeNumber);
+            team.push(manager);
+          } else
+          
+          if (teamData.role === "Engineer") {
+            const engineer = new Engineer (teamData.name, teamData.employeeID, teamData.email, teamData.engineerGithub);
+            team.push(engineer);
+          } else 
+            
+          if (teamData.role === "Intern") {
+            const intern = new Intern (teamData.name, teamData.employeeID, teamData.email, teamData.school);
+            team.push(intern);
+          }
+
+         // console.log(team)
+
+        //condition to exit app, and write data to html page using helper functions in generateHTML.js
+        if (teamData.addOrEnd === "Finished building team") {
+            console.log ('Generating HTML page... Open index.html to see.'); 
+            showData();
+            let data = createHTML();
+            writeFile(data); 
+            } else {
+              promptUser(teamQuestions)
+            }
+        })
+        .catch (err => {console.log(err);})
+}
+
+
+
 function init () {
     console.log (
     `=================
@@ -157,14 +157,7 @@ function init () {
     =================`
     );
     promptUser()
-   }
+  }
 
-// WHEN I enter the team manager’s name, employee ID, email address, and office number
-// THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
-// WHEN I select the engineer option
-// THEN I am prompted to enter the engineer’s name, ID, email, and GitHub username, and I am taken back to the menu
-// WHEN I select the intern option
-// THEN I am prompted to enter the intern’s name, ID, email, and school, and I am taken back to the menu
-// WHEN I decide to finish building my team
-// THEN I exit the application, and the HTML is generated
+// call to start application when "node index" is ran
 init()
