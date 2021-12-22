@@ -28,6 +28,8 @@
 
 
   There is also a sample HTML file for reference in the repo named `samplepage.html`.
+  
+  [samplepage.html](https://krissmith7.github.io/team-summaries/samplepage)
 
 ---
   ## Tests
